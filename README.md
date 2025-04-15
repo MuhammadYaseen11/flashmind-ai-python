@@ -8,7 +8,7 @@ It helps you create Q&A flashcards instantly from any text content, making learn
 - ✅ Fast Q&A generation based on custom input
 - ✅ Easily extendable to export flashcards to JSON, PDF, etc.
   
-🛠️ Tech Stack - Python 3.8+ - [Transformers](https://huggingface.co/docs/transformers/index) (`google/flan-t5-small`)
+🛠️ Tech Stack - Python 3.8+ - [Transformers](https://huggingface.co/docs/transformers/index) (`google/flan-t5-small`) ## Note that its uses small free model so the answers might not be accurate on the first response.
 - Streamlit
 - Torch
 📦 Installation
