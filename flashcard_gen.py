@@ -1,18 +1,30 @@
 from transformers import pipeline
 
-question_gen = pipeline("text2text-generation", model="google/flan-t5-base")
+generator = pipeline("text2text-generation", model="google/flan-t5-base")
 
-def generate_flashcards(text):
+def generate_facts(text):
     prompt = f"""
-    You are an AI that generates flashcards. Read the text below and create 5 Q&A flashcards in this format:
+    Extract 5 important factual statements from the following text:
 
-    Q1: [question]
-    A1: [answer]
-    Q2: ...
-    A2: ...
-    
-    Text:
     {text}
     """
-    result = question_gen(prompt, max_length=512, do_sample=True, temperature=0.7)
-    return result[0]['generated_text']
+    response = generator(prompt, max_length=256, do_sample=False, temperature=0.3)
+    return response[0]['generated_text']
+
+def generate_flashcards(text):
+    facts = generate_facts(text).split('\n')
+    qna_pairs = []
+
+    for i, fact in enumerate(facts[:5]):
+        prompt = f"""
+        Convert this fact into a flashcard:
+
+        Fact: {fact.strip()}
+        Format:
+        Q{i+1}: [Question]
+        A{i+1}: [Answer]
+        """
+        result = generator(prompt, max_length=128, do_sample=False, temperature=0.3)
+        qna_pairs.append(result[0]['generated_text'])
+
+    return "\n".join(qna_pairs)
